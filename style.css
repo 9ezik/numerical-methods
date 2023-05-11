@@ -1,0 +1,46 @@
+header{
+  margin-bottom: 1%;
+}
+
+#matrix-input {
+  float: left;
+  margin-right: 50px;
+}
+
+input[type="submit"] {
+  display: block;
+  margin: 0 auto;
+  margin-top: 50px;
+  margin-bottom: 15px;
+}
+
+/* Стили для таблицы с результатом */
+#solution-table {
+  float: right;
+}
+
+h1{
+  text-align: center;
+}
+
+button[type="submit"] {
+  display: block;
+  margin: 0 auto;
+  margin-top: 25px;
+  margin-bottom: 15px;
+}
+
+.special{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 200px;
+}
+
+#result{
+  text-align: center;
+}
+
+.plot{
+  margin-right: 300px;
+}
