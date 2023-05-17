@@ -44,3 +44,9 @@ button[type="submit"] {
 .plot{
   margin-right: 300px;
 }
+
+canvas {
+  display: block;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
