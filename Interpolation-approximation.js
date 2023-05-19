@@ -22,35 +22,71 @@ function lagrangeInterpolation() {
     const linearCoefficients = calculateLinearApproximation(xi, fi);
     const quadraticCoefficients = calculateQuadraticApproximation(xi, fi);
 
-    console.log("quadraticCoefficients");
-    console.log(quadraticCoefficients);
-
     for (let i = xi[0]-1; i <= xi[4]+1; i++) {
       linearApproximationValues.push(evaluateLinearApproximation(i, linearCoefficients));
       quadraticApproximationValues.push(evaluateQuadraticApproximation(i, quadraticCoefficients));
     }
 
+    var DeviationlinearApproximationSum = [];
+    var DeviationQuadraticApproximationSum = [];
+
     // Виводимо результати на сторінку
     const resultTable = document.getElementById("resultTable");
-    resultTable.innerHTML = "<tr><th>x</th><th>Інтерполяція</th><th>Апроксимація (Лінійна)</th><th>Апроксимація (Квадратична)</th></tr>";
+    resultTable.innerHTML = "<tr><th>x</th><th>Інтерполяція</th><th>Апроксимація (Лінійна)</th><th>y-P1(x)</th><th>(y-P1(x))^2</th><th>Апроксимація (Квадратична)</th><th>y-P2(x)</th><th>(y-P2(x))^2</th></tr>";
     for (let i = 0; i < xValues.length; i++) {
       const row = document.createElement("tr");
       const xCell = document.createElement("td");
       const interpolatedCell = document.createElement("td");
       const linearApproximationCell = document.createElement("td");
+      const DeviationLinCell = document.createElement("td");
+      const DeviationLinQuadCell = document.createElement("td");
+      const DeviationQuaCell = document.createElement("td");
+      const DeviationQuaQuadCell = document.createElement("td");
       const quadraticApproximationCell = document.createElement("td");
 
       xCell.textContent = xValues[i];
       interpolatedCell.textContent = interpolatedValues[i].toFixed(3);
       linearApproximationCell.textContent = linearApproximationValues[i].toFixed(3);
+      DeviationLinCell.textContent = (linearApproximationValues[i]-interpolatedValues[i]).toFixed(3);
+      DeviationLinQuadCell.textContent = (Math.pow(linearApproximationValues[i]-interpolatedValues[i],2)).toFixed(3);
       quadraticApproximationCell.textContent = quadraticApproximationValues[i].toFixed(3);
+      DeviationQuaCell.textContent = (quadraticApproximationValues[i]-interpolatedValues[i]).toFixed(3);
+      DeviationQuaQuadCell.textContent = (Math.pow(quadraticApproximationValues[i]-interpolatedValues[i],2)).toFixed(3);
+      
+      DeviationlinearApproximationSum.push(Math.pow(linearApproximationValues[i]-interpolatedValues[i],2));
+      DeviationQuadraticApproximationSum.push(Math.pow(quadraticApproximationValues[i]-interpolatedValues[i],2));
 
       row.appendChild(xCell);
       row.appendChild(interpolatedCell);
       row.appendChild(linearApproximationCell);
+      row.appendChild(DeviationLinCell);
+      row.appendChild(DeviationLinQuadCell);
       row.appendChild(quadraticApproximationCell);
+      row.appendChild(DeviationQuaCell);
+      row.appendChild(DeviationQuaQuadCell);
+      resultTable.style.textAlign = 'center';
+      resultTable.style.border = '1px solid black';
+      xCell.style.borderRight = '1px solid black';
+      interpolatedCell.style.borderRight = '1px solid black';
+      linearApproximationCell.style.borderRight = '1px solid black';
+      DeviationLinCell.style.borderRight = '1px solid black';
+      DeviationLinQuadCell.style.borderRight = '1px solid black';
+      quadraticApproximationCell.style.borderRight = '1px solid black';
+      DeviationQuaCell.style.borderRight = '1px solid black';
+      DeviationQuaQuadCell.style.borderRight = '1px solid black';
+
       resultTable.appendChild(row);
     }
+
+    const resultSum = document.getElementById('sumDeviation');
+
+    const quaQuadValues = DeviationQuadraticApproximationSum.slice(1, -1);
+    const linQuadValues = DeviationlinearApproximationSum.slice(1, -1);
+
+    const sumQuaQuad = quaQuadValues.reduce((a, b) => a + b, 0);
+    const sumLinQuad = linQuadValues.reduce((a, b) => a + b, 0);
+
+    resultSum.textContent = `Суми квадратів відхилень: лінійна - ${sumLinQuad.toFixed(3)}, квадратична - ${sumQuaQuad.toFixed(3)} (без урахування x=${xValues[0]} та x=${xValues[xValues.length-1]})`;
 
     const ctx = document.getElementById('chart').getContext('2d');
       const chart = new Chart(ctx, {
@@ -183,10 +219,6 @@ function calculateQuadraticApproximation(xi, fi) {
   const b = result[1];
   const c = result[2];
   
-  console.log(`a = ${a}`);
-  console.log(`b = ${b}`);
-  console.log(`c = ${c}`);
-
   return [a, b, c];
 }
 
