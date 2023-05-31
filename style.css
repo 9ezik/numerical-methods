@@ -50,3 +50,9 @@ canvas {
   margin-top: 20px;
   margin-bottom: 20px;
 }
+
+.center-table{
+  text-align: center;
+  margin-left: 38%;
+
+}
